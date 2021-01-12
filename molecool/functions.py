@@ -5,11 +5,10 @@ MolSSI Tutorial Project
 Handles the primary functions
 """
 
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
 
 def canvas(with_attribution=True):
@@ -36,7 +35,26 @@ def canvas(with_attribution=True):
 
 
 def calculate_distance(rA, rB):
-    # This function calculates the distance between two points given as numpy arrays.
+    """
+    This function calculates the distance between two points given as numpy arrays.
+
+    Parameters
+    ----------
+    rA, rB: np.ndarray
+        The coordinates of each point.
+
+    Returns
+    -------
+    dist: float
+        The distance between two points
+
+    Examples
+    --------
+    >>> r1 = np.array([0, 0, 0])
+    >>> r2 = np.array([0, 0.1, 0])
+    >>> calculate_distance(r1, r2)
+    0.1
+    """
     d = rA - rB
     dist = np.linalg.norm(d)
     return dist
@@ -48,10 +66,10 @@ def open_pdb(f_loc):
         data = f.readlines()
     c = []
     sym = []
-    for l in data:
-        if "ATOM" in l[0:6] or "HETATM" in l[0:6]:
-            sym.append(l[76:79].strip())
-            c2 = [float(x) for x in l[30:55].split()]
+    for line in data:
+        if "ATOM" in line[0:6] or "HETATM" in line[0:6]:
+            sym.append(line[76:79].strip())
+            c2 = [float(x) for x in line[30:55].split()]
             c.append(c2)
     coords = np.array(c)
     return sym, coords
